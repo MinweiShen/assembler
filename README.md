@@ -13,6 +13,7 @@ Supported instructions are:
 * jump L // Execute the instruction labeled L next 
 * bgt L // If in the last arithmetic operation or comparison the first operand was greater than the second operand, execute the instruction labeled L next 
 * bne L // If in the last arithmetic operation or comparison the operands were unequal, execute the instruction labeled L next
+
 Maybe more will be added, based on the need of the course.
 
 You can try it at [My blog](http://mwshen.info/2014/11/14/Assembler-for-CS1400/).
