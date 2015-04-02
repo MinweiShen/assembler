@@ -157,8 +157,8 @@ function assemble(){
     	}
     }
 
-    //for(var i=0;i<machineCode.length;i++)
-    	//console.log(machineCode[i]);
+    for(var i=0;i<machineCode.length;i++)
+    	console.log(machineCode[i]);
 
     //convert the codes into hex
     var count = 0;
@@ -271,7 +271,7 @@ function bgt_instruction(instruction,pass,labelLocation){
 		return instruction;
 	else{
 		var label = instruction.split(" ")[1];
-		var result = 252;
+		var result = 221;
 		result += labelLocation[label];
 		return result;
 	}
