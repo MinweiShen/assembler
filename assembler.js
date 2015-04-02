@@ -19,11 +19,16 @@ function assemble(){
     		var label = instruction.split(":")[0];	// It is possible the label is a variable
     		instruction = instruction.split(":")[1].trim();
     		labelLocation[label] = i;
-    		
+
     		//check if instruction is actually a number.
     		if(!isNaN(instruction)){
-      			machineCode.push(parseInt(instruction))
-       			continue;
+                var value = parseInt(instruction);
+                if(value >= 0)
+      			   machineCode.push(value)
+                else{
+                    machineCode.push(256+value);
+                }
+                continue;
     		}
     	}
 
@@ -185,7 +190,7 @@ function store_instruction(instruction, pass,labelLocation){
 
 		result += labelLocation[b];
 		return result;
-	}	
+	}
 }
 
 function load_instruction(instruction,pass,labelLocation){
@@ -220,7 +225,7 @@ function cmp_instruction(instruction){
 		alert("cmp error");
 		return 0;
 	}
-		
+
 }
 
 function cal_instruction(instruction,type){
