@@ -281,7 +281,7 @@ function bne_instruction(instruction,pass,labelLocation){
 		return instruction;
 	else{
 		var label = instruction.split(" ")[1];
-		var result = 220;
+		var result = 189;
 		result += labelLocation[label];
 		return result;
 	}
