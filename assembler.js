@@ -12,6 +12,8 @@ function assemble(){
     //label:line, variable:line
     var labelLocation = {};
     var combineLineCount = 0;
+    for(var i=0;i<instructions.length;i++)
+        instructions[i] = instructions.trim();
     for(var i=0;i< instructions.length;i++){
         var instruction = instructions[i].split("//")[0];
         instruction = instruction.trim();
