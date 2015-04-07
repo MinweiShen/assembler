@@ -102,6 +102,11 @@ function assemble(){
                 break;
             case "clear":
                 //console.log("clear");
+                index = instruction.split(" ")[1][1];
+                if(index == 1)
+                    machineCode.push(157);
+                else if (index == 0)
+                    machineCode.push(129);
                 break;
             case "halt":
                 //console.log("halt");
@@ -109,7 +114,7 @@ function assemble(){
                 break;
             case "jump":
                 //console.log("jump");
-                machineCode.push(jump_instruction(instruction,1,labelLocation));
+                machineCode.push(branch_instruction(instruction,1,labelLocation));
                 break;
             case "bgt":
                 //console.log("bgt");
@@ -141,7 +146,15 @@ function assemble(){
                     break;
                 case "jump":
                     //console.log("jump");
-                    machineCode[i] = jump_instruction(instruction,2,labelLocation);
+                    var lineno = branch_instruction(instruction,2,labelLocation)
+                    // console.log(lineno);
+                    // console.log(i)
+                    if (lineno > i){
+                        machineCode[i] = 160+lineno-i;
+                    }
+                    else{
+                        machineCode[i] = 192+lineno-i;
+                    }
                     break;
                 case "bgt":
                     //console.log("bgt");
@@ -269,16 +282,6 @@ function cal_instruction(instruction,type){
     return result;
 }
 
-function jump_instruction(instruction,pass,labelLocation){
-    if(pass == 1)
-        return instruction;
-    else{
-        var label = instruction.split(" ")[1];
-        var result = 160;
-        result += labelLocation[label];
-        return result;
-    }
-}
 function branch_instruction(instruction,pass,labelLocation){
     if(pass == 1)
         return instruction;
