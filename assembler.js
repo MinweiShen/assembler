@@ -14,9 +14,10 @@ function assemble(){
     var combineLineCount = 0;
     for(var i=0;i< instructions.length;i++){
         var instruction = instructions[i].split("//")[0];
+        instruction = instruction.trim();
         if(instruction == "")
             continue;
-        if(instruction.trim().slice(-1) == ":"){
+        if(instruction.slice(-1) == ":"){
             i++;
             instruction += instructions[i];
             //console.log(instruction);
