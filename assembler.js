@@ -11,15 +11,23 @@ function assemble(){
     var machineCode = [];
     //label:line, variable:line
     var labelLocation = {};
+    var combineLineCount = 0;
     for(var i=0;i< instructions.length;i++){
         var instruction = instructions[i].split("//")[0];
         if(instruction == "")
             continue;
+        if(instruction.trim().slice(-1) == ":"){
+            i++;
+            instruction += instructions[i];
+            //console.log(instruction);
+            combineLineCount++;
+        }
+
         if(instruction.split(":").length == 2){
             console.log(instruction);
             var label = instruction.split(":")[0];  // It is possible the label is a variable
             instruction = instruction.split(":")[1].trim();
-            labelLocation[label] = i;
+            labelLocation[label] = i-combineLineCount;
 
             //check if instruction is actually a number.
             if(!isNaN(instruction)){
