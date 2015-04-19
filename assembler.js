@@ -9,39 +9,51 @@ function assemble(){
     var assembleCode = $('#assembly').val();
     var instructions = assembleCode.split("\n");
     var machineCode = [];
-    //label:line, variable:line
     var labelLocation = {};
-    var combineLineCount = 0;
-    for(var i=0;i<instructions.length;i++)
-        instructions[i] = instructions.trim();
-    for(var i=0;i< instructions.length;i++){
-        var instruction = instructions[i].split("//")[0];
-        instruction = instruction.trim();
-        if(instruction == ""){
-            combineLineCount++；
-            continue;
-        }
-        if(instruction.slice(-1) == ":"){
-            i++;
-            instruction += instructions[i];
-            //console.log(instruction);
-            combineLineCount++;
-        }
+    var new_instructions = []
+    var instruction;
 
-        if(instruction.split(":").length == 2){
-            console.log(instruction);
-            var label = instruction.split(":")[0];  // It is possible the label is a variable
-            instruction = instruction.split(":")[1].trim();
-            labelLocation[label] = i-combineLineCount;
+    // remove spaces
+    for(var i=0;i<instructions.length;i++){
+        instruction = instructions[i].trim().split("//")[0];
+        if(instruction != "")
+            new_instructions.push(instruction);
+    }
+
+    instructions = [];
+
+    // combine labels
+    for(var i = 0;i<new_instructions.length;i++){
+        instruction = new_instructions[i];
+        if(instruction.slice(-1) == ":"){
+            //console.log("combine");
+            new_instructions[i+1] = new_instructions[i] + new_instructions[i+1];
+        }
+        else
+            instructions.push(instruction);
+    }
+
+    for(var i=0;i< instructions.length;i++){
+        instruction = instructions[i];
+
+        var split_instructions = instruction.split(":");
+
+        if(split_instructions.length > 1){
+            //console.log(instruction);
+            for(var j = 0;j <split_instructions.length-1;j++){
+                var label = split_instructions[j];
+                labelLocation[label] = i;
+            }
+            instruction = split_instructions[split_instructions.length-1].trim();
 
             //check if instruction is actually a number.
             if(!isNaN(instruction)){
                 var value = parseInt(instruction);
                 if(value >= 0)
-                   machineCode.push(value)
-                else{
+                    machineCode.push(value)
+                else
                     machineCode.push(256+value);
-                }
+
                 continue;
             }
         }
@@ -159,9 +171,8 @@ function assemble(){
                     break;
                 case "jump":
                     //console.log("jump");
+                    //machineCode[i] = jump_instruction(instruction,2,labelLocation);
                     var lineno = branch_instruction(instruction,2,labelLocation)
-                    // console.log(lineno);
-                    // console.log(i)
                     if (lineno > i){
                         machineCode[i] = 160+lineno-i;
                     }
@@ -188,6 +199,7 @@ function assemble(){
                     else{
                         machineCode[i] = 224+lineno-i;
                     }
+                    // console.log(machineCode[i]);
                     break;
                 default:
                     alert("6 Error line " + (i+1));
@@ -195,9 +207,6 @@ function assemble(){
 
         }
     }
-
-    // for(var i=0;i<machineCode.length;i++)
-    //  console.log(machineCode[i]);
 
     //convert the codes into hex
     var count = 0;
@@ -303,6 +312,7 @@ function branch_instruction(instruction,pass,labelLocation){
         return labelLocation[label];
     }
 }
+
 
 
 
